@@ -139,11 +139,12 @@ def kakurasu_main(args):
     
     ret = lp_solve(f_vector, a_matrix, b_vector, e_vector, \
             lower_bounds_vector, upper_bounds_vector, xint_vector)
+   
+    sol = ret[1]
 
-    if (not ret):
+    if (len(sol) == 0):
         raise "Could not find a solution for this puzzle."
 
-    sol = ret[1]
     for y in range(0,height):
         for x in range(0,width):
             print ('█' if (sol[y*height+x] != 0) else '⨯'),
