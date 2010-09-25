@@ -85,7 +85,7 @@ def kakurasu_main(args):
             
             lower_bounds_vector.append(0)
             upper_bounds_vector.append(1)
-            xint_vector.append(len(f_vector)-1)
+            xint_vector.append(len(f_vector))
 
     eq = 0
     y = 0
