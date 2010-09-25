@@ -6,7 +6,6 @@ import sys
 def kakurasu_main(args):
     input_fn = args.pop(1)
 
-    print "Foo = ", input_fn
     fh = open(input_fn, 'r')
     dims = fh.readline().rstrip('\r\n')
 
@@ -75,13 +74,14 @@ def kakurasu_main(args):
                 x_calc += 1
 
             f_vector.append(1)
-            eq = 0
-            for h_eq in range(0,num_known_horiz_constraints):
-                a_matrix[eq][height * y + x] = x+1
-                eq += 1
-            for v_eq in range(0,num_known_vert_constraints):
-                a_matrix[eq][height * y + x] = y+1
-                eq += 1
+
+            var_num = height * y + x
+            
+            if (horiz_constraints[y] != '?'):
+                a_matrix[y_calc][var_num] = x+1
+
+            if (vert_constraints[x] != '?'):
+                a_matrix[num_known_horiz_constraints+x_calc][var_num] = y+1
             
             lower_bounds_vector.append(0)
             upper_bounds_vector.append(1)
@@ -93,13 +93,15 @@ def kakurasu_main(args):
         while (horiz_constraints[y] == '?'):
             y += 1
         b_vector.append(horiz_constraints[y])
+        y += 1
         e_vector.append(0)
         eq += 1
     x = 0
     for v_eq in range(0,num_known_vert_constraints):
-        while (vert_constraints[y] == '?'):
-            y += 1
-        b_vector.append(vert_constraints[y])
+        while (vert_constraints[x] == '?'):
+            x += 1
+        b_vector.append(vert_constraints[x])
+        x += 1
         e_vector.append(0)
         eq += 1
     
