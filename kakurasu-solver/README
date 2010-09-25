@@ -1,0 +1,28 @@
+Kakurasu games can be found here:
+
+http://www.brainbashers.com/kakurasu.asp
+
+One is given a rectangular grid of squares spanning (1 .. n) x (1 .. m).
+For each row, there is a clue (sometimes optional) which specifies the sum of
+the labels of the columns of the selected squares in that row.
+Likewise each column contains a clue below it that specifies the sum of the
+labels of the rows of selected squares.
+
+The "kakuraso-solver.py" Python program can be used to solve Kakurasu layouts.
+It accepts as an argument a layout description of the following format:
+
+<<<
+$WIDTH*$HEIGHT
+$ROW_CLUE[1]
+$ROW_CLUE[2]
+$ROW_CLUE[3]
+.
+.
+$ROW_CLUE[$HEIGHT]
+Vert: $COL_CLUE[1] $COL_CLUE[2] $COL_CLUE[3] ... $COL_CLUE[$WIDTH]
+>>>
+
+$ROW_CLUE[$idx] and $COL_CLUE[$idx] are either positive integers or '?' (for 
+no clue)
+
+Example Kakurasu layouts can be found in the layouts sub-dir.
