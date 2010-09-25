@@ -17,6 +17,7 @@ def kakurasu_main(args):
     
     found_unknown_horiz_constraints = 0
     horiz_constraints = []
+    num_known_horiz_constraints = 0
     
     for y in range(0,height):
         new_cons = fh.readline()
@@ -25,8 +26,10 @@ def kakurasu_main(args):
             found_unknown_horiz_constraints = 1
         else:
             horiz_constraints.push(int(new_cons))
+            num_known_horiz_constraints += 1
 
     vert_constraints = []
+    num_known_vert_constraints = 0
     line = fh.readline()
     
     m = re.match("Vert:\s*(.*?)", line)
@@ -46,8 +49,71 @@ def kakurasu_main(args):
             vert_constraints.push('?')
         else:
             vert_constraints.push(int(v))
+            num_known_vert_constraints += 1
 
+    a_matrix = []
+    f_vector = []
+    b_vector = []
+    e_vector = []
+    lower_bounds_vector = []
+    upper_bounds_vector = []
+    xint_vector = []
+
+    for m in range(0,num_known_vert_constraints+num_known_horiz_constraints):
+        for n in range(0,width*height):
+            a_matrix[m][n] = 0
+
+    y_calc = -1
+    for y in range(0,height):
+        if (horiz_constraints[y] != '?'):
+            y_calc += 1
+        x_calc = -1
+        for x in range(0,width):
+            if (vert_constraints[x] != '?'):
+                x_calc += 1
+
+            f_vector.add(1)
+            eq = 0
+            for h_eq in range(0,num_known_horiz_constraints):
+                a_matrix[eq][height * y + x] = x+1
+                eq += 1
+            for v_eq in range(0,num_known_vert_constraints):
+                a_matrix[eq][height * y + x] = y+1
+                eq += 1
+            
+            lower_bounds_vector.push(0)
+            upper_bounds_vector.push(1)
+            xint_vector.push(len(f_vector)-1)
+
+    eq = 0
+    y = 0
+    for h_eq in range(0,num_known_horiz_constraints):
+        while (horiz_constraints[y] == '?'):
+            y++
+        b_vector.push(horiz_constraints[y])
+        e_vector.push(0)
+        eq += 1
+    x = 0
+    for v_eq in range(0,num_known_vert_constraints):
+        while (vert_constraints[y] == '?'):
+            y++
+        b_vector(vert_constraints[y])
+        e_vector.push(0)
+        eq += 1
     
+    ret = lp_solve(f_vector, a_matrix, b_vector, e_vector, \
+            lower_bounds_vector, upper_bounds_vector, xint_vector)
+
+    if (not ret):
+        raise "Could not find a solution for this puzzle."
+
+    sol = ret[1]
+    for y in range(0,height):
+        for x in range(0,width):
+            print ('█' if (sol[y*height+x] != 0) else '⨯'),
+        print
+
+    return 0
 
 if __name__ == "__main__":
     sys.exit(kakurasu_main(sys.argv))
