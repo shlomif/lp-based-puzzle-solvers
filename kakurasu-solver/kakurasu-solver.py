@@ -147,8 +147,8 @@ def kakurasu_main(args):
 
     for y in range(0,height):
         for x in range(0,width):
-            print ('█' if (sol[y*height+x] != 0) else '⨯'),
-        print
+            sys.stdout.write ('█' if (sol[y*height+x] != 0) else '⨯')
+        sys.stdout.write("\n")
 
     return 0
 
