@@ -191,12 +191,26 @@ class Solver:
             for y in range(height)
         ]
 
+def cell_as_text(cell):
+    if cell != 0:
+        return '█'
+    else:
+        return '⨯'
+
+def output_sol_cell(cell):
+    sys.stdout.write (cell_as_text(cell))
+
+def print_sol_newline():
+    sys.stdout.write("\n")
+
+def output_cell_row(row):
+    for cell in row:
+        output_sol_cell(cell)
+    print_sol_newline()
 
 def print_sol(sol):
     for row in sol:
-        for cell in row:
-            sys.stdout.write ('█' if (cell != 0) else '⨯')
-        sys.stdout.write("\n")
+        output_cell_row(row)
 
 def kakurasu_main(args):
     input_fn = args.pop(1)
