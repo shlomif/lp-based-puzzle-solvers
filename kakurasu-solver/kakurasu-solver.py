@@ -35,12 +35,6 @@ from lp_solve import *
 import re
 import sys
 
-def print_sol(sol):
-    for row in sol:
-        for cell in row:
-            sys.stdout.write ('█' if (cell != 0) else '⨯')
-        sys.stdout.write("\n")
-
 class Params:
     pass
 
@@ -196,7 +190,14 @@ class Solver:
             [flat_sol[y*width+x] for x in range(width)] 
             for y in range(height)
         ]
+ 
         
+def print_sol(sol):
+    for row in sol:
+        for cell in row:
+            sys.stdout.write ('█' if (cell != 0) else '⨯')
+        sys.stdout.write("\n")
+
 def kakurasu_main(args):
     input_fn = args.pop(1)
 
