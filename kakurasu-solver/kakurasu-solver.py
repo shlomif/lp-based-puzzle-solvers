@@ -35,15 +35,21 @@ from lp_solve import *
 import re
 import sys
 
-def kakurasu_main(args):
-    input_fn = args.pop(1)
-
-    sol = solve_file(input_fn)
+def print_sol(sol):
 
     for row in sol:
         for cell in row:
             sys.stdout.write ('█' if (cell != 0) else '⨯')
         sys.stdout.write("\n")
+
+    return
+
+def kakurasu_main(args):
+    input_fn = args.pop(1)
+
+    sol = solve_file(input_fn)
+
+    print_sol(sol)
 
     return 0
 
