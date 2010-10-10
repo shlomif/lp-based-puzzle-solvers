@@ -20,15 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# This is Shlomi Fish's open-source solver for Kakurasu distributed under the 
+# This is Shlomi Fish's open-source solver for Kakurasu distributed under the
 # MIT / X11 License ( http://en.wikipedia.org/wiki/MIT_License ).
-# 
+#
 # See the README file for more information and you can play Kakurasu online
 # here:
 #
 # http://www.brainbashers.com/kakurasu.asp
 #
-# (Note: I am not affiliated with brainbashers.com, except for the fact 
+# (Note: I am not affiliated with brainbashers.com, except for the fact
 # that I enjoy playing games and solving riddles there.)
 
 from lp_solve import *
@@ -52,7 +52,7 @@ class Solver:
 
         if (not m):
             raise ValueError("First line of dimensions is wrong")
-        
+
         width = int(m.group(1))
         height = int(m.group(2))
 
@@ -65,7 +65,7 @@ class Solver:
         found_unknown_horiz_constraints = 0
         self.horiz_constraints = []
         self.num_known_horiz_constraints = 0
-        
+
         for y in range(0,self.height):
             new_cons = fh.readline().rstrip('\r\n')
             if new_cons == '?':
@@ -78,11 +78,11 @@ class Solver:
         self.vert_constraints = []
         self.num_known_vert_constraints = 0
         line = fh.readline().rstrip('\r\n')
-        
+
         m = re.match('Vert:\s*(.*)', line)
         if (not m):
             raise ValueError("No Very: prefix in last line.")
-        
+
         rest = m.group(1)
         values = re.findall('(\d+|\?)', rest)
 
@@ -131,14 +131,14 @@ class Solver:
                 ret.f_vector.append(1)
 
                 var_num = height * y + x
-                
+
                 if (horiz_constraints[y] != '?'):
                     ret.a_matrix[y_calc][var_num] = x+1
 
                 if (vert_constraints[x] != '?'):
                     ret.a_matrix[num_known_horiz_constraints+x_calc][var_num] \
                             = y+1
-                
+
                 ret.lower_bounds_vector.append(0)
                 ret.upper_bounds_vector.append(1)
                 ret.xint_vector.append(len(ret.f_vector))
@@ -169,14 +169,14 @@ class Solver:
 
         lp_solve_ret = lp_solve(
                 lp_solve_params.f_vector,
-                lp_solve_params.a_matrix, 
-                lp_solve_params.b_vector, 
+                lp_solve_params.a_matrix,
+                lp_solve_params.b_vector,
                 lp_solve_params.e_vector,
-                lp_solve_params.lower_bounds_vector, 
-                lp_solve_params.upper_bounds_vector, 
+                lp_solve_params.lower_bounds_vector,
+                lp_solve_params.upper_bounds_vector,
                 lp_solve_params.xint_vector
         )
-       
+
         flat_sol = lp_solve_ret[1]
 
         if (len(flat_sol) == 0):
@@ -186,12 +186,12 @@ class Solver:
         height = self.height
 
         return \
-        [ 
-            [flat_sol[y*width+x] for x in range(width)] 
+        [
+            [flat_sol[y*width+x] for x in range(width)]
             for y in range(height)
         ]
- 
-        
+
+
 def print_sol(sol):
     for row in sol:
         for cell in row:
