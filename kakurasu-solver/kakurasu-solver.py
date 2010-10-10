@@ -169,41 +169,43 @@ class Solver:
 
         return ret
 
+    def solve(self):
 
+        lp_solve_params = self.calc_params_obj()
+
+        lp_solve_ret = lp_solve(
+                lp_solve_params.f_vector,
+                lp_solve_params.a_matrix, 
+                lp_solve_params.b_vector, 
+                lp_solve_params.e_vector,
+                lp_solve_params.lower_bounds_vector, 
+                lp_solve_params.upper_bounds_vector, 
+                lp_solve_params.xint_vector
+        )
+       
+        flat_sol = lp_solve_ret[1]
+
+        if (len(flat_sol) == 0):
+            raise "Could not find a solution for this puzzle."
+
+        width  = self.width
+        height = self.height
+
+        return \
+        [ 
+            [flat_sol[y*width+x] for x in range(width)] 
+            for y in range(height)
+        ]
         
 def kakurasu_main(args):
     input_fn = args.pop(1)
 
     solver_obj = Solver.parse_input_file(input_fn)
-    sol = solve_object(solver_obj)
+    sol = solver_obj.solve()
 
     print_sol(sol)
 
     return 0
-
-def solve_object(solve_obj):
-
-    lp_solve_params = solve_obj.calc_params_obj()
-
-    lp_solve_ret = lp_solve(
-            lp_solve_params.f_vector,
-            lp_solve_params.a_matrix, 
-            lp_solve_params.b_vector, 
-            lp_solve_params.e_vector,
-            lp_solve_params.lower_bounds_vector, 
-            lp_solve_params.upper_bounds_vector, 
-            lp_solve_params.xint_vector
-    )
-   
-    flat_sol = lp_solve_ret[1]
-
-    if (len(flat_sol) == 0):
-        raise "Could not find a solution for this puzzle."
-
-    width  = solve_obj.width
-    height = solve_obj.height
-
-    return [[flat_sol[y*width+x] for x in range(width)] for y in range(height)]
 
 
 if __name__ == "__main__":
