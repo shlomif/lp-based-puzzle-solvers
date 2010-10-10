@@ -38,6 +38,17 @@ import sys
 def kakurasu_main(args):
     input_fn = args.pop(1)
 
+    sol = solve_file(input_fn)
+
+    for row in sol:
+        for cell in row:
+            sys.stdout.write ('█' if (cell != 0) else '⨯')
+        sys.stdout.write("\n")
+
+    return 0
+
+def solve_file(input_fn):
+
     fh = open(input_fn, 'r')
     dims = fh.readline().rstrip('\r\n')
 
@@ -142,17 +153,11 @@ def kakurasu_main(args):
    
     flat_sol = ret[1]
 
-    sol = [[flat_sol[y*width+x] for x in range(width)] for y in range(height)]
-
-    if (len(sol) == 0):
+    if (len(flat_sol) == 0):
         raise "Could not find a solution for this puzzle."
 
-    for y in range(0,height):
-        for x in range(0,width):
-            sys.stdout.write ('█' if (sol[y][x] != 0) else '⨯')
-        sys.stdout.write("\n")
+    return [[flat_sol[y*width+x] for x in range(width)] for y in range(height)]
 
-    return 0
 
 if __name__ == "__main__":
     sys.exit(kakurasu_main(sys.argv))
