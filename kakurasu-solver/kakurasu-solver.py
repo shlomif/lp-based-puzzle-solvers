@@ -144,14 +144,15 @@ class Solver:
                 ret.xint_vector.append(len(ret.f_vector))
 
         y = 0
-        for h_eq in range(0,num_known_horiz_constraints):
+        while y < len(horiz_constraints):
             while (horiz_constraints[y] == '?'):
                 y += 1
             ret.b_vector.append(horiz_constraints[y])
             y += 1
             ret.e_vector.append(0)
+
         x = 0
-        for v_eq in range(0,num_known_vert_constraints):
+        while x < len(vert_constraints):
             while (vert_constraints[x] == '?'):
                 x += 1
             ret.b_vector.append(vert_constraints[x])
