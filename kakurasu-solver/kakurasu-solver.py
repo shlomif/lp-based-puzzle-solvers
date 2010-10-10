@@ -36,71 +36,89 @@ import re
 import sys
 
 def print_sol(sol):
-
     for row in sol:
         for cell in row:
             sys.stdout.write ('█' if (cell != 0) else '⨯')
         sys.stdout.write("\n")
 
-    return
+class Solver:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    @classmethod
+    def parse_input_file(cls, input_fn):
+        fh = open(input_fn, 'r')
+        dims = fh.readline().rstrip('\r\n')
+
+        m = re.match('(\\d+)\*(\\d+)', dims)
+
+        if (not m):
+            raise ValueError("First line of dimensions is wrong")
+        
+        width = int(m.group(1))
+        height = int(m.group(2))
+
+        ret = cls(width, height)
+        ret.parse_constraints_using_fh(fh)
+
+        return ret
+
+    def parse_constraints_using_fh(self, fh):
+        found_unknown_horiz_constraints = 0
+        self.horiz_constraints = []
+        self.num_known_horiz_constraints = 0
+        
+        for y in range(0,self.height):
+            new_cons = fh.readline().rstrip('\r\n')
+            if new_cons == '?':
+                self.horiz_constraints.append(new_cons)
+                found_unknown_horiz_constraints = 1
+            else:
+                self.horiz_constraints.append(int(new_cons))
+                self.num_known_horiz_constraints += 1
+
+        self.vert_constraints = []
+        self.num_known_vert_constraints = 0
+        line = fh.readline().rstrip('\r\n')
+        
+        m = re.match('Vert:\s*(.*)', line)
+        if (not m):
+            raise ValueError("No Very: prefix in last line.")
+        
+        rest = m.group(1)
+        values = re.findall('(\d+|\?)', rest)
+
+        if (len(values) != self.height):
+            raise ValueError("Not enough values in Vert line")
+
+        for v in values:
+            if v == '?':
+                if found_unknown_horiz_constraints:
+                    raise ValueError("Cannot have both unknown horizontal and vertical constraints.")
+                self.vert_constraints.append('?')
+            else:
+                self.vert_constraints.append(int(v))
+                self.num_known_vert_constraints += 1
 
 def kakurasu_main(args):
     input_fn = args.pop(1)
 
-    sol = solve_file(input_fn)
+    solver_obj = Solver.parse_input_file(input_fn)
+    sol = solve_file(solver_obj)
 
     print_sol(sol)
 
     return 0
 
-def solve_file(input_fn):
+def solve_file(solve_obj):
 
-    fh = open(input_fn, 'r')
-    dims = fh.readline().rstrip('\r\n')
-
-    m = re.match('(\\d+)\*(\\d+)', dims)
-
-    if (not m):
-        raise ValueError("First line of dimensions is wrong")
-    
-    width = int(m.group(1))
-    height = int(m.group(2))
-    
-    found_unknown_horiz_constraints = 0
-    horiz_constraints = []
-    num_known_horiz_constraints = 0
-    
-    for y in range(0,height):
-        new_cons = fh.readline().rstrip('\r\n')
-        if new_cons == '?':
-            horiz_constraints.append(new_cons)
-            found_unknown_horiz_constraints = 1
-        else:
-            horiz_constraints.append(int(new_cons))
-            num_known_horiz_constraints += 1
-
-    vert_constraints = []
-    num_known_vert_constraints = 0
-    line = fh.readline().rstrip('\r\n')
-    
-    m = re.match('Vert:\s*(.*)', line)
-    if (not m):
-        raise ValueError("No Very: prefix in last line.")
-    
-    rest = m.group(1)
-    values = re.findall('(\d+|\?)', rest)
-
-    if (len(values) != height):
-        raise ValueError("Not enough values in Vert line")
-
-    for v in values:
-        if v == '?':
-            if found_unknown_horiz_constraints:
-                raise ValueError("Cannot have both unknown horizontal and vertical constraints.")
-            vert_constraints.append('?')
-        else:
-            vert_constraints.append(int(v))
-            num_known_vert_constraints += 1
+    width = solve_obj.width
+    height = solve_obj.height
+    num_known_vert_constraints = solve_obj.num_known_vert_constraints
+    num_known_horiz_constraints = solve_obj.num_known_horiz_constraints
+    horiz_constraints = solve_obj.horiz_constraints
+    vert_constraints = solve_obj.vert_constraints
 
     a_matrix = []
     f_vector = []
