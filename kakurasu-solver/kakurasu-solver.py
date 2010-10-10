@@ -140,14 +140,16 @@ def kakurasu_main(args):
     ret = lp_solve(f_vector, a_matrix, b_vector, e_vector, \
             lower_bounds_vector, upper_bounds_vector, xint_vector)
    
-    sol = ret[1]
+    flat_sol = ret[1]
+
+    sol = [[flat_sol[y*width+x] for x in range(width)] for y in range(height)]
 
     if (len(sol) == 0):
         raise "Could not find a solution for this puzzle."
 
     for y in range(0,height):
         for x in range(0,width):
-            sys.stdout.write ('█' if (sol[y*height+x] != 0) else '⨯')
+            sys.stdout.write ('█' if (sol[y][x] != 0) else '⨯')
         sys.stdout.write("\n")
 
     return 0
