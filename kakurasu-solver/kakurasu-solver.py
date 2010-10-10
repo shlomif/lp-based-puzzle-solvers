@@ -98,6 +98,15 @@ class Solver:
                 self.vert_constraints.append(int(v))
                 self.num_known_vert_constraints += 1
 
+    def process_constraints(self, constraints, ret):
+        idx = 0
+        while idx < len(constraints):
+            while (constraints[idx] == '?'):
+                idx += 1
+            ret.b_vector.append(constraints[idx])
+            idx += 1
+            ret.e_vector.append(0)
+
     def calc_params_obj(self):
         width = self.width
         height = self.height
@@ -143,21 +152,8 @@ class Solver:
                 ret.upper_bounds_vector.append(1)
                 ret.xint_vector.append(len(ret.f_vector))
 
-        y = 0
-        while y < len(horiz_constraints):
-            while (horiz_constraints[y] == '?'):
-                y += 1
-            ret.b_vector.append(horiz_constraints[y])
-            y += 1
-            ret.e_vector.append(0)
-
-        x = 0
-        while x < len(vert_constraints):
-            while (vert_constraints[x] == '?'):
-                x += 1
-            ret.b_vector.append(vert_constraints[x])
-            x += 1
-            ret.e_vector.append(0)
+        for constraints in [horiz_constraints, vert_constraints]:
+            self.process_constraints(constraints, ret)
 
         return ret
 
