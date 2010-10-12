@@ -11,4 +11,5 @@ setup(
     url='http://www.shlomifish.org/open-source/projects/nikoli-solvers/kakurasu/',
 
     py_modules=[dist_name],
+    requires = ['lp_solve'],
 )
