@@ -1,0 +1,8 @@
+include *.py
+include MANIFEST.in
+include MANIFEST
+include Makefile
+include README
+include t/*.t
+include t/data/expected/*.expected
+include layouts/*.board
