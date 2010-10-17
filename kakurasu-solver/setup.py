@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-dist_name = 'kakurasu-solver'
+dist_name = 'kakurasu_solver'
 
 setup(
     name=dist_name,
