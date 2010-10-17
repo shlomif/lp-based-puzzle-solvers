@@ -228,34 +228,40 @@ class Solver:
             for y in range(height)
         ]
 
-def cell_as_text(cell):
+def _cell_as_text(cell):
+    '''Return a textual representation of a cell in pretty Unicode.'''
     if cell != 0:
         return '█'
     else:
         return '⨯'
 
-def output_sol_cell(cell):
-    sys.stdout.write (cell_as_text(cell))
+def _output_sol_cell(cell):
+    '''Output a cell value - cell is a boolean'''
+    sys.stdout.write (_cell_as_text(cell))
 
-def print_sol_newline():
+def _print_sol_newline():
+    '''Print a newline in the solution.'''
     sys.stdout.write("\n")
 
-def output_cell_row(row):
+def _output_cell_row(row):
+    '''Outputs a row of the solution followed by a newline'''
     for cell in row:
-        output_sol_cell(cell)
-    print_sol_newline()
+        _output_sol_cell(cell)
+    _print_sol_newline()
 
-def print_sol(sol):
+def _print_sol(sol):
+    '''Prints the solution to the screen.'''
     for row in sol:
-        output_cell_row(row)
+        _output_cell_row(row)
 
 def kakurasu_main(args):
+    '''The main() function of the command-line app'''
     input_fn = args.pop(1)
 
     solver_obj = Solver.parse_input_file(input_fn)
     sol = solver_obj.solve()
 
-    print_sol(sol)
+    _print_sol(sol)
 
     return 0
 
