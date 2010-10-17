@@ -125,7 +125,7 @@ class Solver:
                 self.vert_constraints.append(int(v))
                 self.num_known_vert_constraints += 1
 
-    def process_constraints(self, constraints, ret):
+    def _process_constraints(self, constraints, ret):
         '''
         Populate ret.b_vector and ret.e_vector with the constraints, that could
         be the vertical or the horizontal ones.
@@ -184,7 +184,7 @@ class Solver:
                 ret.xint_vector.append(len(ret.f_vector))
 
         for constraints in [horiz_constraints, vert_constraints]:
-            self.process_constraints(constraints, ret)
+            self._process_constraints(constraints, ret)
 
         return ret
 
