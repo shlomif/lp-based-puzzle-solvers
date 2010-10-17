@@ -20,31 +20,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# This is Shlomi Fish's open-source solver for Kakurasu distributed under the
-# MIT / X11 License ( http://en.wikipedia.org/wiki/MIT_License ).
-#
-# See the README file for more information and you can play Kakurasu online
-# here:
-#
-# http://www.brainbashers.com/kakurasu.asp
-#
-# (Note: I am not affiliated with brainbashers.com, except for the fact
-# that I enjoy playing games and solving riddles there.)
+'''
+This is Shlomi Fish's open-source solver for Kakurasu distributed under the
+MIT / X11 License ( http://en.wikipedia.org/wiki/MIT_License ).
+
+See the README file for more information and you can play Kakurasu online
+here:
+
+http://www.brainbashers.com/kakurasu.asp
+
+(Note: I am not affiliated with brainbashers.com, except for the fact
+that I enjoy playing games and solving riddles there.)
+'''
 
 from lp_solve import *
 import re
 import sys
 
 class Params:
+    '''
+    Class for the parameters of the lp_solve module. See the documentation of
+    lp_solve for what they represent.
+    '''
     pass
 
 class Solver:
+    '''The solver instance itself.'''
     def __init__(self, width, height):
+        '''Constructor - assign width and height'''
         self.width = width
         self.height = height
 
     @classmethod
     def parse_input_file(cls, input_fn):
+        '''
+        A class method that parses the input file and constructs an
+        object.
+        '''
         fh = open(input_fn, 'r')
         dims = fh.readline().rstrip('\r\n')
 
@@ -57,11 +69,26 @@ class Solver:
         height = int(m.group(2))
 
         ret = cls(width, height)
-        ret.parse_constraints_using_fh(fh)
+        ret._parse_constraints_using_fh(fh)
 
         return ret
 
-    def parse_constraints_using_fh(self, fh):
+    def _parse_constraints_using_fh(self, fh):
+        '''
+        Parse the constraints using the filehandle (after the width and height
+        were parsed). This function populates the following fields:
+
+        self.horiz_contraints - the horizontal constraints
+        self.num_known_horiz_constraints - the number of known/defined horizontal
+            contraints.
+        self.vert_constraints - the vertical_constraints.
+        self.num_known_vert_constraints - the number of known/defined vertical
+            constaints.
+        
+        All constraints are either an integer or the string '?' if they are not
+        known. The user can fill them himself programatically without calling this
+        method.
+        '''
         found_unknown_horiz_constraints = 0
         self.horiz_constraints = []
         self.num_known_horiz_constraints = 0
@@ -99,6 +126,10 @@ class Solver:
                 self.num_known_vert_constraints += 1
 
     def process_constraints(self, constraints, ret):
+        '''
+        Populate ret.b_vector and ret.e_vector with the constraints, that could
+        be the vertical or the horizontal ones.
+        '''
         idx = 0
         while idx < len(constraints):
             while (constraints[idx] == '?'):
