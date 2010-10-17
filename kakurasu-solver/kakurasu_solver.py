@@ -138,7 +138,11 @@ class Solver:
             idx += 1
             ret.e_vector.append(0)
 
-    def calc_params_obj(self):
+    def _calc_params_obj(self):
+        '''
+        Calculate the Params object that should be passed to the lp_solve module.
+        This fills in the parameters of the equations needed to solve the puzzle.
+        '''
         width = self.width
         height = self.height
         num_known_vert_constraints = self.num_known_vert_constraints
@@ -189,8 +193,16 @@ class Solver:
         return ret
 
     def solve(self):
+        '''
+        This method attempts to solve the game after self.width , self.height , 
+        self.num_known_horiz_constraints , self.num_known_vert_constraints ,
+        self.horiz_constraints and self.vert_constraints were filled in.
 
-        lp_solve_params = self.calc_params_obj()
+        It returns a two-dimensional array containing the rows of the boolean 
+        values with the solution.
+        '''
+
+        lp_solve_params = self._calc_params_obj()
 
         lp_solve_ret = lp_solve(
                 lp_solve_params.f_vector,
