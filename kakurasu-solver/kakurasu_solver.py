@@ -45,7 +45,8 @@ class Params:
     pass
 
 class Solver:
-    '''The solver instance itself.'''
+    '''This class is used to parse the input files, process the data into
+    a format that lp_solve can understand and call lp_solve on it.'''
     def __init__(self, width, height):
         '''Constructor - assign width and height'''
         self.width = width
