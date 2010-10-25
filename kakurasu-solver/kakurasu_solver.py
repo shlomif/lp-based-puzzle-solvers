@@ -55,8 +55,7 @@ class Solver:
     @classmethod
     def parse_input_file(cls, input_fn):
         '''
-        A class method that parses the input file and constructs an
-        object.
+        Parse the input file and create and return a solver instance.
         '''
         fh = open(input_fn, 'r')
         dims = fh.readline().rstrip('\r\n')
