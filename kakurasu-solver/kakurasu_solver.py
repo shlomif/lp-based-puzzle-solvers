@@ -37,14 +37,14 @@ from lp_solve import *
 import re
 import sys
 
-class Params:
+class Params(object):
     '''
     Class for the parameters of the lp_solve module. See the documentation of
     lp_solve for what they represent.
     '''
     pass
 
-class Solver:
+class Solver(object):
     '''This class is used to parse the input files, process the data into
     a format that lp_solve can understand and call lp_solve on it.'''
     def __init__(self, width, height):
