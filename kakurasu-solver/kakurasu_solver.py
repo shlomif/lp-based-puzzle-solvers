@@ -42,8 +42,20 @@ class Params(object):
     Class for the parameters of the lp_solve module. See the documentation of
     lp_solve for what they represent.
     '''
-    pass
 
+    def _process_constraints(self, constraints):
+        '''
+        Populate b_vector and e_vector with the constraints, that could
+        be the vertical or the horizontal ones.
+        '''
+        idx = 0
+        while idx < len(constraints):
+            while (constraints[idx] == '?'):
+                idx += 1
+            self.b_vector.append(constraints[idx])
+            idx += 1
+            self.e_vector.append(0)
+    
 class Solver(object):
     '''This class is used to parse the input files, process the data into
     a format that lp_solve can understand and call lp_solve on it.'''
@@ -125,19 +137,6 @@ class Solver(object):
                 self.vert_constraints.append(int(v))
                 self.num_known_vert_constraints += 1
 
-    def _process_constraints(self, constraints, ret):
-        '''
-        Populate ret.b_vector and ret.e_vector with the constraints, that could
-        be the vertical or the horizontal ones.
-        '''
-        idx = 0
-        while idx < len(constraints):
-            while (constraints[idx] == '?'):
-                idx += 1
-            ret.b_vector.append(constraints[idx])
-            idx += 1
-            ret.e_vector.append(0)
-
     def _calc_params_obj(self):
         '''
         Calculate the Params object that should be passed to the lp_solve module.
@@ -188,7 +187,7 @@ class Solver(object):
                 ret.xint_vector.append(len(ret.f_vector))
 
         for constraints in [horiz_constraints, vert_constraints]:
-            self._process_constraints(constraints, ret)
+            ret._process_constraints(constraints)
 
         return ret
 
