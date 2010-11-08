@@ -55,7 +55,49 @@ class Params(object):
             self.b_vector.append(constraints[idx])
             idx += 1
             self.e_vector.append(0)
-    
+
+    def __init__(self, width, height,
+            num_known_vert_constraints, num_known_horiz_constraints,
+            horiz_constraints, vert_constraints):
+
+        self.a_matrix = []
+        self.f_vector = []
+        self.b_vector = []
+        self.e_vector = []
+        self.lower_bounds_vector = []
+        self.upper_bounds_vector = []
+        self.xint_vector = []
+
+        for m in range(0,num_known_vert_constraints+num_known_horiz_constraints):
+            self.a_matrix.append([0] * (width*height))
+
+        y_calc = -1
+        for y in range(0,height):
+            if (horiz_constraints[y] != '?'):
+                y_calc += 1
+            x_calc = -1
+            for x in range(0,width):
+                if (vert_constraints[x] != '?'):
+                    x_calc += 1
+
+                self.f_vector.append(1)
+
+                var_num = height * y + x
+
+                if (horiz_constraints[y] != '?'):
+                    self.a_matrix[y_calc][var_num] = x+1
+
+                if (vert_constraints[x] != '?'):
+                    self.a_matrix[num_known_horiz_constraints+x_calc][var_num] \
+                            = y+1
+
+                self.lower_bounds_vector.append(0)
+                self.upper_bounds_vector.append(1)
+                self.xint_vector.append(len(self.f_vector))
+
+        for constraints in [horiz_constraints, vert_constraints]:
+            self._process_constraints(constraints)
+
 class Solver(object):
     '''This class is used to parse the input files, process the data into
     a format that lp_solve can understand and call lp_solve on it.'''
@@ -142,54 +184,15 @@ class Solver(object):
         Calculate the Params object that should be passed to the lp_solve module.
         This fills in the parameters of the equations needed to solve the puzzle.
         '''
-        width = self.width
-        height = self.height
-        num_known_vert_constraints = self.num_known_vert_constraints
-        num_known_horiz_constraints = self.num_known_horiz_constraints
-        horiz_constraints = self.horiz_constraints
-        vert_constraints = self.vert_constraints
 
-        ret = Params()
-
-        ret.a_matrix = []
-        ret.f_vector = []
-        ret.b_vector = []
-        ret.e_vector = []
-        ret.lower_bounds_vector = []
-        ret.upper_bounds_vector = []
-        ret.xint_vector = []
-
-        for m in range(0,num_known_vert_constraints+num_known_horiz_constraints):
-            ret.a_matrix.append([0] * (width*height))
-
-        y_calc = -1
-        for y in range(0,height):
-            if (horiz_constraints[y] != '?'):
-                y_calc += 1
-            x_calc = -1
-            for x in range(0,width):
-                if (vert_constraints[x] != '?'):
-                    x_calc += 1
-
-                ret.f_vector.append(1)
-
-                var_num = height * y + x
-
-                if (horiz_constraints[y] != '?'):
-                    ret.a_matrix[y_calc][var_num] = x+1
-
-                if (vert_constraints[x] != '?'):
-                    ret.a_matrix[num_known_horiz_constraints+x_calc][var_num] \
-                            = y+1
-
-                ret.lower_bounds_vector.append(0)
-                ret.upper_bounds_vector.append(1)
-                ret.xint_vector.append(len(ret.f_vector))
-
-        for constraints in [horiz_constraints, vert_constraints]:
-            ret._process_constraints(constraints)
-
-        return ret
+        return Params(
+                width=self.width,
+                height=self.height,
+                num_known_vert_constraints=self.num_known_vert_constraints,
+                num_known_horiz_constraints=self.num_known_horiz_constraints,
+                horiz_constraints = self.horiz_constraints,
+                vert_constraints = self.vert_constraints
+        )
 
     def solve(self):
         '''
