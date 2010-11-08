@@ -237,24 +237,10 @@ def _cell_as_text(cell):
     else:
         return '⨯'
 
-def _output_sol_cell(cell):
-    '''Output a cell value - cell is a boolean'''
-    sys.stdout.write (_cell_as_text(cell))
-
-def _print_sol_newline():
-    '''Print a newline in the solution.'''
-    sys.stdout.write("\n")
-
-def _output_cell_row(row):
-    '''Outputs a row of the solution followed by a newline'''
-    for cell in row:
-        _output_sol_cell(cell)
-    _print_sol_newline()
-
-def _print_sol(sol):
-    '''Prints the solution to the screen.'''
+def print_sol_to_screen_as_unicode(sol):
+    '''Prints the solution to the screen using Unicode characters.'''
     for row in sol:
-        _output_cell_row(row)
+        print "".join(map(_cell_as_text, row))
 
 def kakurasu_main(args):
     '''The main() function of the command-line app'''
@@ -263,7 +249,7 @@ def kakurasu_main(args):
     solver_obj = Solver.parse_input_file(input_fn)
     sol = solver_obj.solve()
 
-    _print_sol(sol)
+    print_sol_to_screen_as_unicode(sol)
 
     return 0
 
