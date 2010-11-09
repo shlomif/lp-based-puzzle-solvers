@@ -196,11 +196,13 @@ class Solver(object):
 
     def solve(self):
         '''
-        This method attempts to solve the game after self.width , self.height , 
+        Attempts to solve the game. 
+        
+        This should be called after self.width , self.height , 
         self.num_known_horiz_constraints , self.num_known_vert_constraints ,
         self.horiz_constraints and self.vert_constraints were filled in.
 
-        It returns a two-dimensional array containing the rows of the boolean 
+        Returns a two-dimensional array containing the rows of the boolean 
         values with the solution.
         '''
 
