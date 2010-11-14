@@ -31,6 +31,18 @@ http://www.brainbashers.com/kakurasu.asp
 
 (Note: I am not affiliated with brainbashers.com, except for the fact
 that I enjoy playing games and solving riddles there.)
+
+------
+
+The algorithm is not too complicated on our side of the fence - it just became 
+a bit hairy because we need to construct input that lp_solve will like.
+
+If you look at a http://brainbashers.com/kakurasu.asp riddle, you'll see that
+you need to mark the cells of a two-dimensional grid as true/false so that the 
+sums will match. So we define Height*Width boolean variables and up to 
+Height+Width integral linear equations with these boolean variables to 
+determine the value of the boolean variables. Then we pass them to lp_solve 
+to do its magic.
 '''
 
 from lp_solve import *
