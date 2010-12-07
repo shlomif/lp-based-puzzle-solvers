@@ -1,8 +1,12 @@
-Kakurasu games can be found here:
+Information about Kakuro (also known as Cross Sums) can be found here:
 
-http://www.brainbashers.com/kakurasu.asp
+* http://en.wikipedia.org/wiki/Kakuro
 
-One is given a rectangular grid of squares spanning (1 .. n) x (1 .. m).
+* http://brainbashers.com/kakuro.asp
+
+* http://kakuro.com/
+
+One is given a rectangular grid of squares, with clues indicating
 For each row, there is a clue (sometimes optional) which specifies the sum of
 the labels of the columns of the selected squares in that row.
 Likewise each column contains a clue below it that specifies the sum of the
