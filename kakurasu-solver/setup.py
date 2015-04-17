@@ -8,7 +8,7 @@ setup(
     description='Solver for the Kakurasu Riddle Game',
     author='Shlomi Fish',
     author_email='shlomif@cpan.org',
-    url='http://www.shlomifish.org/open-source/projects/nikoli-solvers/kakurasu/',
+    url='http://www.shlomifish.org/open-source/projects/japanese-puzzle-games/kakurasu/',
 
     py_modules=[dist_name],
     requires = ['lp_solve'],
