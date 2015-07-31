@@ -34,14 +34,14 @@ that I enjoy playing games and solving riddles there.)
 
 ------
 
-The algorithm is not too complicated on our side of the fence - it just became 
+The algorithm is not too complicated on our side of the fence - it just became
 a bit hairy because we need to construct input that lp_solve will like.
 
 If you look at a http://brainbashers.com/kakurasu.asp riddle, you'll see that
-you need to mark the cells of a two-dimensional grid as true/false so that the 
-sums will match. So we define Height*Width boolean variables and up to 
-Height+Width integral linear equations with these boolean variables to 
-determine the value of the boolean variables. Then we pass them to lp_solve 
+you need to mark the cells of a two-dimensional grid as true/false so that the
+sums will match. So we define Height*Width boolean variables and up to
+Height+Width integral linear equations with these boolean variables to
+determine the value of the boolean variables. Then we pass them to lp_solve
 to do its magic.
 '''
 
@@ -150,7 +150,7 @@ class Solver(object):
         self.vert_constraints - the vertical_constraints.
         self.num_known_vert_constraints - the number of known/defined vertical
             constaints.
-        
+
         All constraints are either an integer or the string '?' if they are not
         known. The user can fill them himself programatically without calling this
         method.
@@ -208,13 +208,13 @@ class Solver(object):
 
     def solve(self):
         '''
-        Attempts to solve the game. 
-        
-        This should be called after self.width , self.height , 
+        Attempts to solve the game.
+
+        This should be called after self.width , self.height ,
         self.num_known_horiz_constraints , self.num_known_vert_constraints ,
         self.horiz_constraints and self.vert_constraints were filled in.
 
-        Returns a two-dimensional array containing the rows of the boolean 
+        Returns a two-dimensional array containing the rows of the boolean
         values with the solution.
         '''
 

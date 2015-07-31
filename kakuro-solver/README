@@ -26,7 +26,7 @@ $ROW_CLUE[$HEIGHT]
 Vert: $COL_CLUE[1] $COL_CLUE[2] $COL_CLUE[3] ... $COL_CLUE[$WIDTH]
 >>>
 
-$ROW_CLUE[$idx] and $COL_CLUE[$idx] are either positive integers or '?' (for 
+$ROW_CLUE[$idx] and $COL_CLUE[$idx] are either positive integers or '?' (for
 no clue)
 
 Example Kakurasu layouts can be found in the layouts sub-dir.
